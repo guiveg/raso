@@ -1,2 +1,2 @@
-# raso
-RASter Ontology
+# RASO
+The RASter Ontology is purposed for rasters.
