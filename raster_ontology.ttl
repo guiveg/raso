@@ -11,8 +11,6 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
-
-#Defino la ontología propia como rdf:type Ontology. Es decir, es miembro de la clase de owl Ontología
 raso: a owl:Ontology ;
     rdfs:label "Raster ontology"@en , "Ontología de ráster"@es ;
     rdfs:comment "Ontology for annotating raster datasets"@en , 
@@ -94,7 +92,7 @@ raso:WeatherRaster a owl:Class , rdfs:Class ;
   rdfs:subClassOf raso:RasterDataset ;
   rdfs:label "Weather raster dataset"@en , "Conjunto de datos ráster meteorológicos"@es ;
   rdfs:comment "Gridded weather data composed of pixels"@en , 
-  	"Datos meteorológicos en una malla compuestos de píxeles"@es ; 
+  	"Datos meteorológicos en una malla compuestos de píxeles"@es ;
   rdfs:isDefinedBy raso: .
   
 raso:Pixel a owl:Class , rdfs:Class ;
@@ -507,3 +505,4 @@ dc:creator rdf:type owl:AnnotationProperty ;
   rdfs:range foaf:Agent ;
   rdfs:label "creator"@en ;
   rdfs:label "creador"@es .
+  
