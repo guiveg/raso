@@ -1,0 +1,509 @@
+@prefix raso: <http://raster.gsic.uva.es/ontology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix sf: <http://www.opengis.net/ont/sf#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+
+#Defino la ontología propia como rdf:type Ontology. Es decir, es miembro de la clase de owl Ontología
+raso: a owl:Ontology ;
+    rdfs:label "Raster ontology"@en , "Ontología de ráster"@es ;
+    rdfs:comment "Ontology for annotating raster datasets"@en , 
+    	"Ontología para anotar datos rásters"@es ;
+    owl:versionInfo 0.4 ;
+    dc:creator  <https://www.gsic.uva.es/members/guiveg> ;
+    dc:date "2025-10-03"^^xsd:date ;
+    vann:preferredNamespacePrefix "raso" . #The preferred namespace prefix to use when using terms from this vocabulary in an XML document.
+
+
+#################################################################
+#    Classes
+#################################################################
+
+raso:Grid a owl:Class , rdfs:Class ;
+  rdfs:subClassOf geo:Feature ;
+  rdfs:label "Grid"@en , "Malla"@es ;
+  rdfs:comment "Spatial representation type that defines a coordinate mesh"@en , 
+  	"Tipo de representación espacial que define una malla de coordenadas"@es ; 
+  rdfs:isDefinedBy raso: . 
+
+raso:Cell a owl:Class , rdfs:Class ;
+  rdfs:subClassOf geo:Feature ;
+  rdfs:label "Cell"@en , "Celda"@es ;
+  rdfs:comment "Rectangular area in a grid"@en , 
+  	"Área rectangular en una malla"@es ; 
+  rdfs:isDefinedBy raso: . 
+
+geo:Feature a rdfs:Class, owl:Class ;
+  owl:disjointWith geo:Geometry ;
+  rdfs:label "Feature"@en , "Característica"@es ;
+  rdfs:comment "A discrete spatial phenomenon in a universe of discourse"@en , 
+  	"Un fenómeno discreto espacial en un universo de discurso"@es ; 
+  rdfs:isDefinedBy geo: . 
+
+geo:Geometry a rdfs:Class, owl:Class ;
+  owl:disjointWith geo:Feature ;
+  rdfs:label "Geometry"@en , "Geometría"@es ;
+  rdfs:comment "A coherent set of direct positions in space"@en , 
+  	"Un conjunto coherente de posiciones directas en el espacio"@es ; 
+  rdfs:isDefinedBy geo: .
+  
+sf:Polygon a rdfs:Class, owl:Class ;
+  rdfs:subClassOf geo:Geometry ;
+  rdfs:label "Polygon"@en , "Polígono"@es ;
+  rdfs:comment "A planar surface defined by 1 exterior boundary and 0 or more interior boundaries"@en ; 
+  rdfs:comment "Una superficie plana definida por 1 borde exterior y 0 o más bordes interiores"@es ; 
+  rdfs:isDefinedBy sf: .
+
+sf:Point a rdfs:Class, owl:Class ;
+  rdfs:subClassOf geo:Geometry ;
+  rdfs:label "Point"@en , "Punto"@es ;
+  rdfs:comment "A point is a 0-dimensional geometric object and represents a single location in coordinate space"@en ; 
+  rdfs:comment "Un punto es un objeto geométrico 0-dimensional que representa una única localización en un espacio de coordenadas"@es ; 
+  rdfs:isDefinedBy sf: .
+
+dcat:Dataset a rdfs:Class , owl:Class ;
+  rdfs:label "Conjunto de datos"@es ;
+  rdfs:label "Dataset"@en ;
+  rdfs:comment "A collection of data, published or curated by a single source, and available for access or download in one or more representations."@en ;
+  rdfs:comment "Una colección de datos, publicados o conservados por una única fuente, y disponibles para ser accedidos o descargados en uno o más formatos."@es ;
+  rdfs:isDefinedBy <http://www.w3.org/TR/vocab-dcat/> .
+  
+raso:RasterDataset a owl:Class , rdfs:Class ;
+  rdfs:subClassOf dcat:Dataset ;
+  rdfs:label "Raster dataset"@en , "Conjunto de datos ráster"@es ;
+  rdfs:comment "Gridded data composed of pixels"@en , 
+  	"Datos en una malla compuestos de píxeles"@es ; 
+  rdfs:isDefinedBy raso: .
+
+raso:ClimateRaster a owl:Class , rdfs:Class ;
+  rdfs:subClassOf raso:RasterDataset ;
+  rdfs:label "Climate raster dataset"@en , "Conjunto de datos ráster climáticos"@es ;
+  rdfs:comment "Gridded climate data composed of pixels"@en , 
+  	"Datos climáticos en una malla compuestos de píxeles"@es ; 
+  rdfs:isDefinedBy raso: .
+
+raso:WeatherRaster a owl:Class , rdfs:Class ;
+  rdfs:subClassOf raso:RasterDataset ;
+  rdfs:label "Weather raster dataset"@en , "Conjunto de datos ráster meteorológicos"@es ;
+  rdfs:comment "Gridded weather data composed of pixels"@en , 
+  	"Datos meteorológicos en una malla compuestos de píxeles"@es ; 
+  rdfs:isDefinedBy raso: .
+  
+raso:Pixel a owl:Class , rdfs:Class ;
+  rdfs:label "Pixel"@en , "Píxel"@es ;
+  rdfs:comment "Cell data of a raster dataset"@en , 
+  	"Datos de una celda de un conjunto de datos ráster"@es ; 
+  rdfs:isDefinedBy raso: . 
+
+raso:Band a owl:Class , rdfs:Class ;
+  rdfs:label "Band"@en , "Banda"@es ;
+  rdfs:comment "One of the sample values of a raster, captured in each pixel"@en , 
+  	"Uno de los valores que se toman de un ráster, capturado en cada píxel"@es ; 
+  rdfs:isDefinedBy raso: . 
+
+raso:Measurement a owl:Class , rdfs:Class ;
+  rdfs:label "Measurement"@en , "Medida"@es ;
+  rdfs:comment "The result of measuring the band of a pixel"@en , 
+  	"El resultado de medir la banda de un píxel"@es ; 
+  rdfs:isDefinedBy raso: . 
+
+raso:Variable a owl:Class , rdfs:Class ;
+  rdfs:label "Variable"@en , "Variable"@es ;
+  rdfs:isDefinedBy raso: . 
+  
+dc:PeriodOfTime a owl:Class , rdfs:Class ;
+  rdfs:label "Period of Time"@en , "Periodo de tiempo"@es .
+
+dc:Location a owl:Class , rdfs:Class ;
+  rdfs:label "Location"@en , "Localización"@es .
+
+foaf:Organization a owl:Class , rdfs:Class ;
+  rdfs:subClassOf foaf:Agent ;
+  rdfs:label "Organization"@en , "Organización"@es ;
+  rdfs:comment "The Organization class represents a kind of Agent corresponding to social instititutions such as companies, societies, etc."@en ;
+  rdfs:comment "La clase Organization representa un tipo de Agent correspondiente a instituciones sociales como compañías, sociedades, etc.."@es .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+raso:containsCell a owl:ObjectProperty , rdf:Property ;
+  rdfs:label "contains cell"@en , "contiene celda"@es ;
+  rdfs:domain raso:Grid ;
+  rdfs:range raso:Cell ;
+  rdfs:isDefinedBy raso: .
+  
+geo:hasGeometry a owl:ObjectProperty , rdf:Property ;
+  rdfs:label "has geometry"@en , "tiene geometría"@es ;
+  rdfs:domain geo:Feature ;
+  rdfs:range geo:Geometry ;
+  rdfs:isDefinedBy geo: .
+  
+geo:hasCentroid a owl:ObjectProperty , rdf:Property ;
+  rdfs:subPropertyOf geo:hasGeometry ;
+  rdfs:label "has centroid"@en , "tiene centroide"@es ;
+  rdfs:domain geo:Feature ;
+  rdfs:range geo:Geometry ;
+  rdfs:isDefinedBy geo: .
+
+raso:containsPixel a owl:ObjectProperty , rdf:Property ;
+  rdfs:label "contains pixel"@en , "contiene píxel"@es ;
+  rdfs:domain raso:RasterDataset ;
+  rdfs:range raso:Pixel ;
+  rdfs:isDefinedBy raso: .
+  
+raso:hasGrid a owl:ObjectProperty , rdf:Property ;
+  rdfs:label "has grid"@en , "tiene malla"@es ;
+  rdfs:domain raso:RasterDataset ;
+  rdfs:range raso:Grid ;
+  rdfs:isDefinedBy raso: .
+  
+raso:hasCell a owl:ObjectProperty , rdf:Property ;
+  rdfs:label "has cell"@en , "en celda"@es ;
+  rdfs:domain raso:Pixel ;
+  rdfs:range raso:Cell ;
+  rdfs:isDefinedBy raso: .
+
+raso:hasMeasurement a owl:ObjectProperty , rdf:Property ;
+  rdfs:label "has measurement"@en , "tiene medida"@es ;
+  rdfs:domain raso:Pixel ;
+  rdfs:range raso:Measurement ;
+  rdfs:isDefinedBy raso: .
+
+raso:belongsToBand a owl:ObjectProperty , rdf:Property ;
+  rdfs:label "belongs to band"@en , "pertenece a banda"@es ;
+  rdfs:domain raso:Measurement ;
+  rdfs:range raso:Band ;
+  rdfs:isDefinedBy raso: .
+
+raso:hasBand a owl:ObjectProperty , rdf:Property ;
+  rdfs:label "has band"@en , "tiene banda"@es ;
+  rdfs:domain raso:RasterDataset ;
+  rdfs:range raso:Band ;
+  rdfs:isDefinedBy raso: .
+
+raso:hasVariable a owl:ObjectProperty , rdf:Property ;
+  rdfs:label "has variable"@en , "tiene variable"@es ;
+  rdfs:range raso:Variable ;
+  rdfs:isDefinedBy raso: .
+
+dc:temporal a owl:ObjectProperty , rdf:Property ;
+  rdfs:label "temporal coverage"@en , "cobertura temporal"@es ;
+  rdfs:range dc:PeriodOfTime .
+
+dc:spatial a owl:ObjectProperty , rdf:Property ;
+  rdfs:label "spatial coverage"@en , "cobertura espacial"@es ;
+  rdfs:range dc:Location .
+
+
+
+#################################################################
+#    Data Properties
+#################################################################
+
+# título del Grid o del RasterDataset
+
+dc:title a owl:DatatypeProperty , rdf:Property ;
+	rdfs:label "title"@en ;
+	rdfs:label "título"@es .
+
+
+# data props de Grid
+  
+raso:CRS a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Grid ;
+  rdfs:range xsd:string ;
+  rdfs:label "Coordinate Reference System"@en ;
+  rdfs:label "Sistema de Coordenadas de Referencia"@es ;
+  rdfs:isDefinedBy raso: .
+  
+raso:columns a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Grid ;
+  rdfs:range xsd:nonNegativeInteger ;
+  rdfs:label "number of columns"@en ;
+  rdfs:label "número de columnas"@es ; 
+  rdfs:isDefinedBy raso: .
+
+raso:rows a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Grid ;
+  rdfs:range xsd:nonNegativeInteger ;
+  rdfs:label "number of rows"@en ;
+  rdfs:label "número de filas"@es ;
+  rdfs:isDefinedBy raso: .
+
+raso:cellWidth a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Grid ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "cell width"@en ;
+  rdfs:label "ancho de celda"@es ;
+  rdfs:isDefinedBy raso: .
+  
+raso:cellHeight a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Grid ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "cell height"@en ;
+  rdfs:label "alto de celda"@es ;
+  rdfs:isDefinedBy raso: .
+
+
+# data props de Cell
+
+raso:column a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Cell ;
+  rdfs:range xsd:nonNegativeInteger ;
+  rdfs:label "column"@en ;
+  rdfs:label "columna"@es ;
+  rdfs:isDefinedBy raso: .
+  
+raso:row a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Cell ;
+  rdfs:range xsd:nonNegativeInteger ;
+  rdfs:label "row"@en ;
+  rdfs:label "fila"@es ;
+  rdfs:isDefinedBy raso: .
+  
+raso:elevationInMeters a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Cell ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "elevation in meters"@en ;
+  rdfs:label "elevación en metros"@es ;
+  rdfs:isDefinedBy raso: .
+
+
+# data prop de Geometry
+
+geo:asWKT a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain geo:Geometry ;
+  rdfs:range geo:wktLiteral ;
+  rdfs:label "as WKT"@en ;
+  rdfs:label "tiene WKT"@es ;
+  rdfs:comment "WKT serialization of a geometry."@en ;
+  rdfs:comment "Serialización WKT de una geometría"@es ;
+  rdfs:isDefinedBy geo: .
+
+
+# data props de Point
+
+raso:lat a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain sf:Point ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "latitude"@en ;
+  rdfs:label "latitud"@es ;
+  rdfs:isDefinedBy raso: .
+
+raso:lng a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain sf:Point ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "longitude"@en ;
+  rdfs:label "longitud"@es ;
+  rdfs:isDefinedBy raso: .
+  
+
+# data props de Polygon
+
+raso:north a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain sf:Polygon ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "north latitude"@en ;
+  rdfs:label "latitud norte"@es ;
+  rdfs:isDefinedBy raso: .
+
+raso:south a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain sf:Polygon ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "south latitude"@en ;
+  rdfs:label "latitud sur"@es ;
+  rdfs:isDefinedBy raso: .
+  
+raso:west a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain sf:Polygon ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "west longitude"@en ;
+  rdfs:label "longitud oeste"@es ;
+  rdfs:isDefinedBy raso: .
+  
+raso:east a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain sf:Polygon ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "east longitude"@en ;
+  rdfs:label "longitud este"@es ;
+  rdfs:isDefinedBy raso: .
+
+
+# data props de RasterDataset y Band
+
+dcat:temporalResolution a owl:DatatypeProperty , rdf:Property ;
+  rdfs:label "temporal resolution"@en ;
+  rdfs:label "resolución temporal"@es ;
+  rdfs:comment "minimum time period resolvable in a dataset."@en ;
+  rdfs:comment "período de tiempo mínimo en el conjunto de datos."@es ;
+  rdfs:range xsd:duration ;
+  rdfs:isDefinedBy <https://www.w3.org/TR/vocab-dcat-2/> .
+
+
+# data props de Pixel (atajos)
+
+raso:hasValueYear a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in year"@en ;
+  rdfs:label "tiene valor en año"@es ; 
+  rdfs:isDefinedBy raso: .
+  
+raso:hasValueMonth01 a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in January"@en ;
+  rdfs:label "tiene valor en enero"@es ; 
+  rdfs:isDefinedBy raso: .
+
+raso:hasValueMonth02 a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in February"@en ;
+  rdfs:label "tiene valor en febrero"@es ; 
+  rdfs:isDefinedBy raso: .
+  
+raso:hasValueMonth03 a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in March"@en ;
+  rdfs:label "tiene valor en marzo"@es ; 
+  rdfs:isDefinedBy raso: .
+  
+raso:hasValueMonth04 a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in April"@en ;
+  rdfs:label "tiene valor en abril"@es ; 
+  rdfs:isDefinedBy raso: .
+
+raso:hasValueMonth05 a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in May"@en ;
+  rdfs:label "tiene valor en mayo"@es ; 
+  rdfs:isDefinedBy raso: .
+  
+raso:hasValueMonth06 a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in June"@en ;
+  rdfs:label "tiene valor en junio"@es ; 
+  rdfs:isDefinedBy raso: .
+
+raso:hasValueMonth07 a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in July"@en ;
+  rdfs:label "tiene valor en julio"@es ; 
+  rdfs:isDefinedBy raso: .
+
+raso:hasValueMonth08 a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in August"@en ;
+  rdfs:label "tiene valor en agosto"@es ; 
+  rdfs:isDefinedBy raso: .
+  
+raso:hasValueMonth09 a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in September"@en ;
+  rdfs:label "tiene valor en septiembre"@es ; 
+  rdfs:isDefinedBy raso: .
+  
+raso:hasValueMonth10 a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in October"@en ;
+  rdfs:label "tiene valor en octubre"@es ; 
+  rdfs:isDefinedBy raso: .
+
+raso:hasValueMonth11 a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in November"@en ;
+  rdfs:label "tiene valor en noviembre"@es ; 
+  rdfs:isDefinedBy raso: .
+  
+raso:hasValueMonth12 a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Pixel ;
+  rdfs:label "has value in December"@en ;
+  rdfs:label "tiene valor en diciembre"@es ; 
+  rdfs:isDefinedBy raso: .
+
+
+# data props de Measurement
+
+raso:hasValue a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Measurement ;
+  rdfs:label "has value"@en ;
+  rdfs:label "tiene valor"@es ; 
+  rdfs:isDefinedBy raso: .
+
+
+# data props de Band
+
+raso:bandIndex a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Band ;
+  rdfs:range xsd:nonNegativeInteger ;
+  rdfs:label "band index"@en ;
+  rdfs:label "índice de la banda"@es ;
+  rdfs:isDefinedBy raso: .
+
+
+# data props de Variable
+
+raso:hasUnit a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain raso:Variable ;
+  rdfs:range xsd:string ;
+  rdfs:label "has unit"@en ;
+  rdfs:label "tiene unidad"@es ;
+  rdfs:isDefinedBy raso: .
+
+
+# data props de dc:PeriodOfTime
+  
+dcat:startDate a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain dc:PeriodOfTime ;
+  rdfs:label "start date"@en ;
+  rdfs:label "fecha inicio"@es ;
+  skos:scopeNote "El rango de esta propiedad es intencionalmente genérico con el propósito de permitir distintos niveles de precisión temporal para especificar el comienzo de un período. Por ejemplo, puede expresarse como una fecha (xsd:date), una fecha y un tiempo (xsd:dateTime), o un año (xsd:gYear)."@es ;
+  skos:scopeNote "The range of this property is intentionally generic, with the purpose of allowing different level of temporal precision for specifying the start of a period. E.g., it can be expressed with a date (xsd:date), a date and time (xsd:dateTime), or a year (xsd:gYear)."@en ;
+  rdfs:isDefinedBy <https://www.w3.org/TR/vocab-dcat-2/> .
+  
+dcat:endDate a owl:DatatypeProperty , rdf:Property ;
+  rdfs:domain dc:PeriodOfTime ;
+  rdfs:label "end date"@en ;
+  rdfs:label "fecha fin"@es ;
+  skos:scopeNote "El rango de esta propiedad es intencionalmente genérico con el propósito de permitir distintos niveles de precisión temporal para especificar el comienzo de un período. Por ejemplo, puede expresarse como una fecha (xsd:date), una fecha y un tiempo (xsd:dateTime), o un año (xsd:gYear)."@es ;
+  skos:scopeNote "The range of this property is intentionally generic, with the purpose of allowing different level of temporal precision for specifying the start of a period. E.g., it can be expressed with a date (xsd:date), a date and time (xsd:dateTime), or a year (xsd:gYear)."@en ;
+  rdfs:isDefinedBy <https://www.w3.org/TR/vocab-dcat-2/> .
+
+
+# data props de RasterDataset o Band
+
+raso:hasYear a owl:DatatypeProperty , rdf:Property ;
+  rdfs:range xsd:gYear ;
+  rdfs:label "has year"@en ;
+  rdfs:label "tiene año"@es ; 
+  rdfs:isDefinedBy raso: .
+  
+raso:hasMonth a owl:DatatypeProperty , rdf:Property ;
+  rdfs:range xsd:gMonth ;
+  rdfs:label "has month"@en ;
+  rdfs:label "tiene mes"@es ; 
+  rdfs:isDefinedBy raso: .
+ 
+dcat:version a owl:DatatypeProperty , rdf:Property ;
+  rdfs:label "version"@en ;
+  rdfs:label "versión"@es .
+   
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/terms/creator
+dc:creator rdf:type owl:AnnotationProperty ;
+  rdfs:range foaf:Agent ;
+  rdfs:label "creator"@en ;
+  rdfs:label "creador"@es .
